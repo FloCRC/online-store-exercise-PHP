@@ -3,11 +3,11 @@
 declare(strict_types=1);
 
 abstract class Product implements Displayable {
-    public string $title;
+    protected string $title;
     private string $description;
-    public float $price;
-    public float $discountedPrice;
-    public bool $canDiscount = false;
+    protected float $price;
+    private float $discountedPrice;
+    private bool $canDiscount = false;
     protected float $weight;
     public function __construct(string $title, string $description, float $price, bool $canDiscount, float $weight)
     {
@@ -23,8 +23,8 @@ abstract class Product implements Displayable {
         if ($this->discountedPrice !== $this->price) {
             return "<div class='product'>
                     <h3>$this->title</h3>
-                    <span class='old-price'>£$this->price</span>
-                    <span class='discount'>, NOW with 10% discount - £$this->discountedPrice! Limited time only!</span>
+                    <span class='old-price'>£$this->price, </span>
+                    <span class='discount'>NOW with 10% discount - £$this->discountedPrice! Limited time only!</span>
                     <p>$this->description</p>
                 </div>";
         }
@@ -41,4 +41,28 @@ abstract class Product implements Displayable {
         }
     }
     abstract public function shippingCosts(): float;
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+    public function getPrice(): float
+    {
+        return $this->price;
+    }
+    public function getDiscountedPrice(): float
+    {
+        return $this->discountedPrice;
+    }
+    public function isCanDiscount(): bool
+    {
+        return $this->canDiscount;
+    }
+    public function getWeight(): float
+    {
+        return $this->weight;
+    }
 }

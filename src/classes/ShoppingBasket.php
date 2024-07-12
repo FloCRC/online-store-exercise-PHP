@@ -18,13 +18,17 @@ class ShoppingBasket implements Displayable {
     }
     public function display(): string
     {
-        $result = "<div><h3>This is your basket: {$this->customer->firstName}<ul>";
+        $firstName = $this->customer->getFirstName();
+        $result = "<div><h3>This is your basket: $firstName<ul>";
         foreach ($this->basket as $product){
-            if ($product->canDiscount){
-                $result .= "<li>$product->title - $product->discountedPrice</li>";
+            $title = $product->getTitle();
+            $price = $product->getPrice();
+            $discountedPrice = $product->getDiscountedPrice();
+            if ($product->isCanDiscount()){
+                $result .= "<li>$title - $discountedPrice</li>";
             }
             else {
-                $result .= "<li>$product->title - $product->price</li>";
+                $result .= "<li>$title - $price</li>";
             }
         }
         $result .= "<ul></div>";
@@ -34,14 +38,17 @@ class ShoppingBasket implements Displayable {
     {
         $this->basketTotal = 0;
         foreach ($this->basket as $product){
-            if($product->canDiscount) {
-                $this->basketTotal += $product->discountedPrice;
+            $price = $product->getPrice();
+            $discountedPrice = $product->getDiscountedPrice();
+            $canDiscount = $product->isCanDiscount();
+            if($canDiscount) {
+                $this->basketTotal += $discountedPrice;
             }
             else {
-                $this->basketTotal += $product->price;
+                $this->basketTotal += $price;
             }
         }
-        $paysVAT = !isset($this->customer->vatNum);
+        $paysVAT = !method_exists($this->customer, 'getVatNum');
         if ($paysVAT) {
             $this->basketTotal *= 1.2;
         }
@@ -53,7 +60,7 @@ class ShoppingBasket implements Displayable {
         foreach ($this->basket as $product){
             $this->shippingCostTotal += $product->shippingCosts();
         }
-        $paysVAT = !isset($this->customer->vatNum);
+        $paysVAT = !method_exists($this->customer, 'getVatNum');
         if ($paysVAT) {
             $this->shippingCostTotal *= 1.2;
         }
@@ -64,7 +71,7 @@ class ShoppingBasket implements Displayable {
         $basketTotal = $this->getBasketTotal();
         $shippingTotal = $this->getShippingCostTotal();
         $this->basketPlusShippingTotal = $basketTotal + $shippingTotal;
-        $paysVAT = !isset($this->customer->vatNum);
+        $paysVAT = !method_exists($this->customer, 'getVatNum');
         if ($paysVAT) {
             $this->basketPlusShippingTotal *= 1.2;
         }

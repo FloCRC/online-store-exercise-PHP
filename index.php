@@ -3,12 +3,12 @@
 declare(strict_types=1);
 
 require_once 'src/interfaces/Displayable.php';
-require_once 'src/classes/Product.php';
-require_once 'src/classes/SmallProduct.php';
-require_once 'src/classes/LargeProduct.php';
+require_once 'src/classes/products/Product.php';
+require_once 'src/classes/products/SmallProduct.php';
+require_once 'src/classes/products/LargeProduct.php';
 require_once 'src/classes/ShoppingBasket.php';
-require_once 'src/classes/Customer.php';
-require_once 'src/classes/BusinessCustomer.php';
+require_once 'src/classes/customers/Customer.php';
+require_once 'src/classes/customers/BusinessCustomer.php';
 require_once 'src/classes/EmailAddress.php';
 
 $hat = new SmallProduct("Cowboy Hat", "A classic tan cowboy hat.", 15.79, false, 0.8);
